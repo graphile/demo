@@ -1,0 +1,12 @@
+{
+  "license": "MIT",
+  "dependencies": {
+    "@graphile-contrib/pg-simplify-inflector": "^5.0.0-beta.1",
+    "postgraphile": "^4.4.0-rc.1"
+  },
+  "scripts": {
+    "setup": "createdb graphile_example && createuser graphql && psql -Xv ON_ERROR_STOP=1 -f schema.sql graphile_example",
+    "cleanup": "dropdb graphile_example && dropuser graphql",
+    "reset": "npm run cleanup && npm run setup"
+  }
+}
