@@ -72,7 +72,7 @@ comment on function articles_next(a articles) is
 
 /**********/
 
--- Root custom query
+-- Root custom query returning connection
 
 create or replace function search_articles(query text)
 returns setof articles
@@ -102,6 +102,8 @@ comment on function search_articles(text) is
 
 /**********/
 
+-- Add a mutation to our schema
+
 grant insert (title, url) on articles to graphql;
 
 
@@ -120,6 +122,8 @@ grant insert (title, url) on articles to graphql;
 
 
 /**********/
+
+-- Enable row level security, and add some policies
 
 alter table articles enable row level security;
 
@@ -147,6 +151,8 @@ create policy select_verified on articles for select using (
 
 
 /**********/
+
+-- Create a domain, and switch articles.url to use it
 
 create domain web_address as text check (value ~ '^https?://');
 

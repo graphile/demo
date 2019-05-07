@@ -4,15 +4,16 @@ create extension if not exists citext;
 -- Database privileges
 revoke all on database graphile_example from public;
 grant connect on database graphile_example to graphql;
-
 alter default privileges in schema public grant all on sequences to graphql;
 grant all on all sequences in schema public to graphql;
 
+-- See "Smoke and mirrors" in the README
 create function current_user_id() returns int as $$
   -- Replace with: select nullif(current_setting('jwt.claims.user_id', true), '')::int;
   select 1;
 $$ language sql stable;
-
+-- This comment stops this function being exported to the GraphQL schema, see:
+-- https://www.graphile.org/postgraphile/smart-comments/
 comment on function current_user_id() is '@omit';
 
 -- Users table
@@ -34,7 +35,7 @@ create table articles (
 );
 grant select on articles to graphql;
 
--- Initial articles data
+-- Seed data
 insert into users (username, verified) values
   ('Benjie', false),
   ('scientificracehorse', false),
